@@ -1,7 +1,8 @@
 import {getRandomInteger, getRandomArrayElement} from './util.js';
 
 const OBJECTS_QUANTITY = 25;
-const COMMENTS_QUANTITY = 6;
+const COMMENTS_QUANTITY_MIN = 1;
+const COMMENTS_QUANTITY_MAX = 20;
 
 const AVATAR_MIN_ID = 1;
 const AVATAR_MAX_ID = 6;
@@ -47,7 +48,7 @@ const createComment = () => ({
   name: getRandomArrayElement(NAMES),
 });
 
-const createComments = () => Array.from({length: COMMENTS_QUANTITY}, createComment);
+const createComments = () => Array.from({length: getRandomInteger(COMMENTS_QUANTITY_MIN, COMMENTS_QUANTITY_MAX)}, createComment);
 
 const createPhoto = () => ({
   id: getRandomInteger(PHOTO_MIN_ID, PHOTO_MAX_ID),
