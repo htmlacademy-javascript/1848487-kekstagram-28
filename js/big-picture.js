@@ -52,9 +52,6 @@ const openBigPicture = (url, likes, comments, description) => {
   commentsLoader.classList.add('hidden');
   commentsCount.classList.add('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
-
-
-  renderComments(comments);
 };
 
 cancelButton.addEventListener('click', onCancelButtonClick);
