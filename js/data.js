@@ -1,7 +1,7 @@
 import {getRandomInteger, getRandomArrayElement} from './util.js';
 
 const OBJECTS_QUANTITY = 25;
-const COMMENTS_QUANTITY_MIN = 1;
+const COMMENTS_QUANTITY_MIN = 6;
 const COMMENTS_QUANTITY_MAX = 20;
 
 const AVATAR_MIN_ID = 1;

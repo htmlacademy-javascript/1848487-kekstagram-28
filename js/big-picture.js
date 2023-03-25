@@ -2,14 +2,13 @@ import {isEscapeKey} from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
-const commentsList = bigPicture.querySelector('.social-comment');
+const commentsList = bigPicture.querySelector('.social__comments');
 const commentsLoader = bigPicture.querySelector('.comments-loader');
-const cancelButton = document.querySelector('.big-picture__cancel');
-const commentTemplate = document.querySelector('template#social-comment').content.querySelector('social-comment');
-const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
-const bigPictureAlt = bigPicture.querySelector('.big-picture__img img');
+const cancelButton = bigPicture.querySelector('.big-picture__cancel');
+const commentTemplate = document.querySelector('#social__comment').content.querySelector('.social__comment');
+const bigPictureElement = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
-const socialCaption = bigPicture.querySelector('.social-caption');
+const socialCaption = bigPicture.querySelector('.social__caption');
 
 const createComment = ({avatar, name, message}) => {
   const comment = commentTemplate.cloneNode(true);
@@ -41,21 +40,21 @@ const onCancelButtonClick = () => {
   closeBigPicture();
 };
 
-const renderPictures = ({url, likes, description}) => {
-  bigPictureImg.src = url;
-  bigPictureAlt.alt = description;
+const openBigPicture = (url, likes, comments, description) => {
+  bigPictureElement.src = url;
+  bigPictureElement.alt = description;
   likesCount.textContent = likes;
   socialCaption.textContent = description;
-};
 
-const openBigPicture = (data) => {
+  renderComments(comments);
+
   bigPicture.classList.remove('hidden');
   commentsLoader.classList.add('hidden');
   commentsCount.classList.add('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
 
-  renderPictures(data);
-  renderComments(data.comments);
+
+  renderComments(comments);
 };
 
 cancelButton.addEventListener('click', onCancelButtonClick);
