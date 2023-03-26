@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
 
+const COMMENTS_PER_PICTURE = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const commentsCount = bigPicture.querySelector('.social__comment-count');
 const commentsList = bigPicture.querySelector('.social__comments');
@@ -10,18 +12,27 @@ const bigPictureElement = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
 const socialCaption = bigPicture.querySelector('.social__caption');
 
-const createComment = ({avatar, name, message}) => {
-  const comment = commentTemplate.cloneNode(true);
-  comment.querySelector('.social__picture').src = avatar;
-  comment.querySelector('.social__picture').alt = name;
-  comment.querySelector('.social__text').textContent = message;
+let commentsArray = [];
+let commentsOpened = 0;
 
-  return comment;
-};
+const renderComments = () => {
+  const limit = commentsOpened + COMMENTS_PER_PICTURE;
+  if (commentsArray.length <= limit) {
+    commentsLoader.classList.add('hidden');
+  } else {
+    commentsLoader.classList.remove('hidden');
+  }
 
-const renderComments = (comments) => {
-  commentsList.innerHTML = '';
-  commentsList.append(...comments.map(createComment));
+  commentsCount.innerHTML = `${Math.min(commentsArray.length, limit)} из ${commentsArray.length} комментариев`;
+
+  commentsArray.slice(commentsOpened, limit).forEach((comment) => {
+    const createComment = commentTemplate.cloneNode(true);
+    createComment.querySelector('.social__picture').src = comment.avatar;
+    createComment.querySelector('.social__picture').alt = comment.name;
+    createComment.querySelector('.social__text').textContent = comment.message;
+
+    commentsList.append(createComment);
+  });
 };
 
 const closeBigPicture = () => {
@@ -40,17 +51,24 @@ const onCancelButtonClick = () => {
   closeBigPicture();
 };
 
+commentsLoader.addEventListener('click', () => {
+  commentsOpened += COMMENTS_PER_PICTURE;
+  renderComments();
+});
+
 const openBigPicture = (url, likes, comments, description) => {
   bigPictureElement.src = url;
   bigPictureElement.alt = description;
   likesCount.textContent = likes;
   socialCaption.textContent = description;
 
-  renderComments(comments);
+  commentsList.innerHTML = '';
+  commentsOpened = 0;
+  commentsArray = comments;
+
+  renderComments();
 
   bigPicture.classList.remove('hidden');
-  commentsLoader.classList.add('hidden');
-  commentsCount.classList.add('hidden');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
