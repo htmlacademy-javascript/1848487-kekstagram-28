@@ -1,3 +1,5 @@
+import {resetScale} from './scale.js';
+import {resetEffects} from './effects.js';
 import {isEscapeKey} from './util.js';
 
 const MAX_HASHTAGS_COUNT = 5;
@@ -5,8 +7,9 @@ const ERROR_TEXT = 'Неправильно заполнено поле';
 const REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const body = document.querySelector('body');
-const uploadForm = document.querySelector('.img-upload__overlay');
-const uploadFile = document.querySelector('#upload-file');
+const uploadForm = document.querySelector('.img-upload__form');
+const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
+const uploadFile = uploadForm.querySelector('#upload-file');
 const cancelButton = uploadForm.querySelector('.img-upload__cancel');
 const textHashtags = uploadForm.querySelector('.text__hashtags');
 const textDescription = uploadForm.querySelector('.text__description');
@@ -32,7 +35,7 @@ const validateTags = (value) => {
     .split(' ')
     .filter((tag) => tag.trim().length);
 
-  return tags.every(isValidTag) && isValidLength(tags) && isValidCase(tags);
+  return isValidLength(tags) && isValidCase(tags) && tags.every(isValidTag);
 };
 
 pristine.addValidator (
@@ -42,7 +45,7 @@ pristine.addValidator (
 );
 
 const openForm = () => {
-  uploadForm.classList.remove('hidden');
+  uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
@@ -50,8 +53,10 @@ const openForm = () => {
 const closeForm = () => {
   uploadForm.reset();
   pristine.reset();
-  uploadForm.classList.add('hidden');
-  body.classList.rempve('modal-open');
+  resetScale();
+  resetEffects();
+  uploadOverlay.classList.add('hidden');
+  body.classList.remove('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
