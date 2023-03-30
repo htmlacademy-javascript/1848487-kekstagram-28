@@ -95,17 +95,10 @@ const onEffectsChange = (evt) => {
 const onSliderUpdate = () => {
   const sliderValue = effectSlider.noUiSlider.get();
   imgUploadPreview.style.filter = isDefault()
-    ? DEFAULT_EFFECT.style
-    : `${effectSelected.style}(${sliderValue}${effectSelected.unit})`;
+    ? DEFAULT_EFFECT.filter
+    : `${effectSelected.filter}(${sliderValue}${effectSelected.unit})`;
   effectValue.value = sliderValue;
 };
-
-// if (isDefault()) {
-// imgUploadPreview.style.filter = DEFAULT_EFFECT.style;
-// } else {
-// imgUploadPreview.style.filter = `${effectSelected.style}(${sliderValue}${effectSelected.unit})`;
-// }
-// effectValue.value = sliderValue;
 
 const resetEffects = () => {
   effectSelected = DEFAULT_EFFECT;
