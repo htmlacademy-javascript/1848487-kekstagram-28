@@ -5,6 +5,10 @@ import {isEscapeKey} from './util.js';
 const MAX_HASHTAGS_COUNT = 5;
 const ERROR_TEXT = 'Неправильно заполнено поле';
 const REGEXP = /^#[a-zа-яё0-9]{1,19}$/i;
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Опубликовываю...'
+};
 
 const body = document.querySelector('body');
 const uploadForm = document.querySelector('.img-upload__form');
@@ -13,6 +17,7 @@ const uploadFile = uploadForm.querySelector('#upload-file');
 const cancelButton = uploadForm.querySelector('.img-upload__cancel');
 const textHashtags = uploadForm.querySelector('.text__hashtags');
 const textDescription = uploadForm.querySelector('.text__description');
+const submitButton = uploadForm.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(uploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -37,12 +42,6 @@ const validateTags = (value) => {
 
   return isValidLength(tags) && isValidCase(tags) && tags.every(isValidTag);
 };
-
-pristine.addValidator (
-  textHashtags,
-  validateTags,
-  ERROR_TEXT
-);
 
 const openForm = () => {
   uploadOverlay.classList.remove('hidden');
@@ -85,9 +84,36 @@ const onCancelButtonClick = () => {
 
 const onFormSubmit = (evt) => {
   evt.preventDefault();
-  pristine.vaidate();
+  pristine.validate();
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
+pristine.addValidator (textHashtags, validateTags, ERROR_TEXT);
+
+const setOnFormSubmit = (cb) => {
+  uploadForm.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      blockSubmitButton();
+      await cb(new FormData(uploadForm));
+      unblockSubmitButton();
+    }
+  });
 };
 
 uploadFile.addEventListener('change', onFormChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 uploadForm.addEventListener('submit', onFormSubmit);
+
+export {setOnFormSubmit, closeForm};
