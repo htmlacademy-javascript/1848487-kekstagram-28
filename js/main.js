@@ -1,8 +1,9 @@
 import {renderThumbnails} from './thumbnails.js';
 import {setOnFormSubmit, closeForm} from './form.js';
-import {showAlert} from './util.js';
+import {showAlert, debounce} from './util.js';
 import {getData, sendData} from './api.js';
 import {showSuccessMessage, showErrorMessage} from './messages.js';
+import {init, getSortedPictures} from './sorting.js';
 
 setOnFormSubmit(async (data) => {
   try {
@@ -16,7 +17,9 @@ setOnFormSubmit(async (data) => {
 
 try {
   const createPhotos = await getData();
-  renderThumbnails(createPhotos);
+  const debouncedRenderThumbnails = debounce(renderThumbnails);
+  init(createPhotos, debouncedRenderThumbnails);
+  renderThumbnails(getSortedPictures());
 } catch (err) {
   showAlert(err.message);
 }
