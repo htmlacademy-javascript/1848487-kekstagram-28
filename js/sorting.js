@@ -26,7 +26,7 @@ const getSortedPictures = () => {
   }
 };
 
-const onSortingClick = (callback) => {
+const onSortingClick = (cb) => {
   sorting.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;
@@ -38,14 +38,14 @@ const onSortingClick = (callback) => {
     sorting.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     clickedButton.classList.add('img-filters__button--active');
     currentSorting = clickedButton.id;
-    callback(getSortedPictures());
+    cb(getSortedPictures());
   });
 };
 
-const init = (loadedPictures, callback) => {
+const init = (loadedPictures, cb) => {
   sorting.classList.remove('img-filters--inactive');
   pictures = [...loadedPictures];
-  onSortingClick(callback);
+  onSortingClick(cb);
 };
 
 export {init, getSortedPictures};

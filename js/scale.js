@@ -10,7 +10,7 @@ const imgUploadPreview = document.querySelector('.img-upload__preview img');
 
 scaleValue.value = `${DEFAULT_SCALE}%`;
 
-const scaleImg = (value) => {
+const scaleImage = (value) => {
   imgUploadPreview.style.transform = `scale(${value / 100})`;
   scaleValue.value = `${value}%`;
 };
@@ -21,7 +21,7 @@ const onScaleSmallerClick = () => {
   if (newScaleValue < MIN_SCALE) {
     newScaleValue = MIN_SCALE;
   }
-  scaleImg(newScaleValue);
+  scaleImage(newScaleValue);
 };
 
 const onScaleBiggerClick = () => {
@@ -30,10 +30,10 @@ const onScaleBiggerClick = () => {
   if (newScaleValue > MAX_SCALE) {
     newScaleValue = MAX_SCALE;
   }
-  scaleImg(newScaleValue);
+  scaleImage(newScaleValue);
 };
 
-const resetScale = () => scaleImg(DEFAULT_SCALE);
+const resetScale = () => scaleImage(DEFAULT_SCALE);
 
 scaleSmaller.addEventListener('click', onScaleSmallerClick);
 scaleBigger.addEventListener('click', onScaleBiggerClick);
