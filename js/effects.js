@@ -58,7 +58,6 @@ const EFFECTS = [
 const DEFAULT_EFFECT = EFFECTS[0];
 let effectSelected = DEFAULT_EFFECT;
 
-
 const imgUploadPreview = document.querySelector('.img-upload__preview img');
 const effectsList = document.querySelector('.effects');
 const effectLevel = document.querySelector('.img-upload__effect-level');
@@ -90,7 +89,6 @@ const onEffectsChange = (evt) => {
   imgUploadPreview.className = (`effects__preview--${effectSelected.name}`);
   updateSlider();
 };
-
 
 const onSliderUpdate = () => {
   const sliderValue = effectSlider.noUiSlider.get();
