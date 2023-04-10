@@ -3,7 +3,7 @@ import {setOnFormSubmit, closeForm} from './form.js';
 import {showAlert, debounce} from './util.js';
 import {getData, sendData} from './api.js';
 import {showSuccessMessage, showErrorMessage} from './messages.js';
-import {init, getSortedPictures} from './sorting.js';
+import {showFilters, getSortedPictures} from './sorting.js';
 import './avatar.js';
 
 setOnFormSubmit(async (data) => {
@@ -19,7 +19,7 @@ setOnFormSubmit(async (data) => {
 try {
   const createPhotos = await getData();
   const debouncedRenderThumbnails = debounce(renderThumbnails);
-  init(createPhotos, debouncedRenderThumbnails);
+  showFilters(createPhotos, debouncedRenderThumbnails);
   renderThumbnails(getSortedPictures());
 } catch (err) {
   showAlert(err.message);

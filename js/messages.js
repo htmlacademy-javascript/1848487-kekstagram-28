@@ -11,8 +11,8 @@ const closeMessage = () => {
     message.remove();
   }
 
-  document.removeEventListener('click', onOutsideClick);
-  document.removeEventListener('keydown', onMessageKeydown);
+  document.removeEventListener('click', setOnOutsideClick);
+  document.removeEventListener('keydown', setOnMessageKeydown);
 };
 
 const showErrorMessage = () => {
@@ -21,8 +21,8 @@ const showErrorMessage = () => {
   const errorButton = document.querySelector('.error__button');
   errorButton.addEventListener('click', closeMessage);
 
-  document.addEventListener('click', onOutsideClick);
-  document.addEventListener('keydown', onMessageKeydown);
+  document.addEventListener('click', setOnOutsideClick);
+  document.addEventListener('keydown', setOnMessageKeydown);
 };
 
 const showSuccessMessage = () => {
@@ -31,18 +31,18 @@ const showSuccessMessage = () => {
   const successButton = document.querySelector('.success__button');
   successButton.addEventListener('click', closeMessage);
 
-  document.addEventListener('click', onOutsideClick);
-  document.addEventListener('keydown', onMessageKeydown);
+  document.addEventListener('click', setOnOutsideClick);
+  document.addEventListener('keydown', setOnMessageKeydown);
 };
 
-function onMessageKeydown (evt) {
+function setOnMessageKeydown (evt) {
   if (isEscapeKey(evt) && getMessageType()) {
     evt.preventDefault();
     closeMessage();
   }
 }
 
-function onOutsideClick (evt) {
+function setOnOutsideClick (evt) {
   const type = getMessageType();
   if (evt.target === type) {
     closeMessage();

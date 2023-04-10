@@ -13,20 +13,20 @@ const bigPictureElement = bigPicture.querySelector('.big-picture__img img');
 const likesCount = bigPicture.querySelector('.likes-count');
 const socialCaption = bigPicture.querySelector('.social__caption');
 
-let commentsArray = [];
+let allComments = [];
 let commentsOpened = 0;
 
 const renderComments = () => {
   const limit = commentsOpened + COMMENTS_PER_PICTURE;
-  if (commentsArray.length <= limit) {
+  if (allComments.length <= limit) {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
   }
 
-  commentsCount.innerHTML = `${Math.min(commentsArray.length, limit)} из ${commentsArray.length} комментариев`;
+  commentsCount.innerHTML = `${Math.min(allComments.length, limit)} из ${allComments.length} комментариев`;
 
-  commentsArray.slice(commentsOpened, limit).forEach((comment) => {
+  allComments.slice(commentsOpened, limit).forEach((comment) => {
     const createComment = commentTemplate.cloneNode(true);
     createComment.querySelector('.social__picture').src = comment.avatar;
     createComment.querySelector('.social__picture').alt = comment.name;
@@ -39,17 +39,17 @@ const renderComments = () => {
 const closeBigPicture = () => {
   body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
-  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('keydown', setOnDocumentKeydown);
 };
 
-function onDocumentKeydown(evt) {
+function setOnDocumentKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
 }
 
-const onCancelButtonClick = () => {
+const setOnCancelButtonClick = () => {
   closeBigPicture();
 };
 
@@ -66,15 +66,15 @@ const openBigPicture = (url, likes, comments, description) => {
 
   commentsList.innerHTML = '';
   commentsOpened = 0;
-  commentsArray = comments;
+  allComments = comments;
 
   renderComments();
 
   body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('keydown', setOnDocumentKeydown);
 };
 
-cancelButton.addEventListener('click', onCancelButtonClick);
+cancelButton.addEventListener('click', setOnCancelButtonClick);
 
 export {openBigPicture};

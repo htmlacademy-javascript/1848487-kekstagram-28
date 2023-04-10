@@ -15,7 +15,7 @@ const scaleImage = (value) => {
   scaleValue.value = `${value}%`;
 };
 
-const onScaleSmallerClick = () => {
+const setOnScaleSmallerClick = () => {
   const currentScaleValue = parseInt(scaleValue.value, 10);
   let newScaleValue = currentScaleValue - SCALE_STEP;
   if (newScaleValue < MIN_SCALE) {
@@ -24,7 +24,7 @@ const onScaleSmallerClick = () => {
   scaleImage(newScaleValue);
 };
 
-const onScaleBiggerClick = () => {
+const setOnScaleBiggerClick = () => {
   const currentScaleValue = parseInt(scaleValue.value, 10);
   let newScaleValue = currentScaleValue + SCALE_STEP;
   if (newScaleValue > MAX_SCALE) {
@@ -35,7 +35,7 @@ const onScaleBiggerClick = () => {
 
 const resetScale = () => scaleImage(DEFAULT_SCALE);
 
-scaleSmaller.addEventListener('click', onScaleSmallerClick);
-scaleBigger.addEventListener('click', onScaleBiggerClick);
+scaleSmaller.addEventListener('click', setOnScaleSmallerClick);
+scaleBigger.addEventListener('click', setOnScaleBiggerClick);
 
 export {resetScale};
