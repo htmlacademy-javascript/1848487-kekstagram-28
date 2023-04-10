@@ -10,8 +10,8 @@ const sorting = document.querySelector('.img-filters');
 let currentSorting = Sorting.DEFAULT;
 let pictures = [];
 
-const randomSorting = () => Math.random() - 0.5;
-const discussedSorting = (a, b) => b.comments.length - a.comments.length;
+const sortRandomly = () => Math.random() - 0.5;
+const sortByComments = (a, b) => b.comments.length - a.comments.length;
 const clearPictures = () => document.querySelectorAll('.picture').forEach((element) => element.remove());
 
 const getSortedPictures = () => {
@@ -20,13 +20,13 @@ const getSortedPictures = () => {
     case Sorting.DEFAULT:
       return [...pictures];
     case Sorting.RANDOM:
-      return [...pictures].sort(randomSorting).slice(0, RANDOM_PICTURES_COUNT);
+      return [...pictures].sort(sortRandomly).slice(0, RANDOM_PICTURES_COUNT);
     case Sorting.DISCUSSED:
-      return [...pictures].sort(discussedSorting);
+      return [...pictures].sort(sortByComments);
   }
 };
 
-const onSortingClick = (cb) => {
+const setOnSortingClick = (cb) => {
   sorting.addEventListener('click', (evt) => {
     if (!evt.target.classList.contains('img-filters__button')) {
       return;
@@ -42,10 +42,10 @@ const onSortingClick = (cb) => {
   });
 };
 
-const init = (loadedPictures, cb) => {
+const showFilters = (loadedPictures, cb) => {
   sorting.classList.remove('img-filters--inactive');
   pictures = [...loadedPictures];
-  onSortingClick(cb);
+  setOnSortingClick(cb);
 };
 
-export {init, getSortedPictures};
+export {showFilters, getSortedPictures};

@@ -1,6 +1,7 @@
 import {resetScale} from './scale.js';
 import {resetEffects} from './effects.js';
 import {isEscapeKey} from './util.js';
+import {getMessageType} from './messages.js';
 
 const MAX_HASHTAGS_COUNT = 5;
 const ERROR_TEXT = 'Неправильно заполнено поле';
@@ -46,7 +47,7 @@ const validateTags = (value) => {
 const openForm = () => {
   uploadOverlay.classList.remove('hidden');
   body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('keydown', setOnDocumentKeydown);
 };
 
 const closeForm = () => {
@@ -56,15 +57,15 @@ const closeForm = () => {
   resetEffects();
   uploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('keydown', setOnDocumentKeydown);
 };
 
 const isFocused = () =>
   document.activeElement === textHashtags ||
   document.activeElement === textDescription;
 
-function onDocumentKeydown(evt) {
-  if (isEscapeKey(evt) && !isFocused()) {
+function setOnDocumentKeydown(evt) {
+  if (isEscapeKey(evt) && !isFocused() && !getMessageType()) {
     evt.preventDefault();
     closeForm();
   }
@@ -74,15 +75,15 @@ uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 });
 
-const onFormChange = () => {
+const setOnFormChange = () => {
   openForm();
 };
 
-const onCancelButtonClick = () => {
+const setOnCancelButtonClick = () => {
   closeForm();
 };
 
-const onFormSubmit = (evt) => {
+const setOnFormSubmitClick = (evt) => {
   evt.preventDefault();
   pristine.validate();
 };
@@ -112,8 +113,8 @@ const setOnFormSubmit = (cb) => {
   });
 };
 
-uploadFile.addEventListener('change', onFormChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
-uploadForm.addEventListener('submit', onFormSubmit);
+uploadFile.addEventListener('change', setOnFormChange);
+cancelButton.addEventListener('click', setOnCancelButtonClick);
+uploadForm.addEventListener('submit', setOnFormSubmitClick);
 
 export {setOnFormSubmit, closeForm};

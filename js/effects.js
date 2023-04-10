@@ -81,7 +81,7 @@ const updateSlider = () => {
   (isDefault() ? hideSlider : showSlider)();
 };
 
-const onEffectsChange = (evt) => {
+const setOnEffectsChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
@@ -90,7 +90,7 @@ const onEffectsChange = (evt) => {
   updateSlider();
 };
 
-const onSliderUpdate = () => {
+const setOnSliderUpdate = () => {
   const sliderValue = effectSlider.noUiSlider.get();
   imgUploadPreview.style.filter = isDefault()
     ? DEFAULT_EFFECT.filter
@@ -115,7 +115,7 @@ noUiSlider.create(effectSlider, {
 });
 hideSlider();
 
-effectsList.addEventListener('change', onEffectsChange);
-effectSlider.noUiSlider.on('update', onSliderUpdate);
+effectsList.addEventListener('change', setOnEffectsChange);
+effectSlider.noUiSlider.on('update', setOnSliderUpdate);
 
 export {resetEffects};
